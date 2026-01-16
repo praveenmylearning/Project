@@ -1,0 +1,13 @@
+requirements.txt
+duckduckgo-search>=8.1.1
+fastembed>=0.7.4
+google-genai>=1.59.0
+ollama>=0.6.1
+openai>=2.15.0
+pydantic>=2.12.5
+pymupdf>=1.26.7
+python-dotenv>=1.2.1
+streamlit>=1.53.0
+tavily-python>=0.7.19
+qdrant-client>=2.7.0
+langsmith>=0.1.0

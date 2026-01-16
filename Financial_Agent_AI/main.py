@@ -1,6 +1,12 @@
-def main():
-    print("Hello from financial-agent-ai!")
+"""
+Financial Agent AI - Root Entry Point
+Thin delegation wrapper for professional project structure
+"""
+
+import asyncio
+import sys
+from core_main import main
 
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())

@@ -1,0 +1,150 @@
+.venv/
+# Documentation and Guides (exclude all .md files in root EXCEPT README)
+*SETUP*.md
+*GUIDE*.md
+*START*.md
+*CHECKLIST*.md
+*STEPS*.md
+00_START_HERE_FIRST.md
+ALL_DONE.md
+CLEANUP*.md
+COMPLETION_SUMMARY.md
+CONFIG_REFERENCE.md
+DOCS_INDEX.md
+DOCUMENTATION_INDEX.md
+EXACT_LOCATIONS*.md
+FINAL_SUMMARY*.md
+IMPLEMENTATION_STATUS.md
+NEW_DOCUMENTATION.md
+PERSONAL_SETUP*.md
+PROJECT_SUMMARY.md
+PROJECT_STATUS.py
+PROJECT_VERIFICATION.py
+QUICK_START.md
+SYSTEM_ARCHITECTURE.md
+TESTING_GUIDE.md
+VISUAL*.md
+VISUAL*.py
+WORKFLOW_VALIDATION.py
+
+# Documentation folders
+docs/
+
+# Generated files
+.env.template
+.env
+.env.local
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+ENV/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Tests
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Logs
+*.log
+
+# Data and models
+data/
+*.csv
+*.xlsx
+*.parquet
+*.pkl
+*.pth
+*.pt
+
+# OS
+Thumbs.db
+
+# =========================
+# Environment
+# =========================
+.env
+.env.local
+
+# =========================
+# Python
+# =========================
+__pycache__/
+*.pyc
+*.log
+
+# =========================
+# Documentation / Guides
+# =========================
+00_*.md
+*_DONE.md
+*_SUMMARY*.md
+*_STATUS*.md
+*_CHECKLIST*.md
+*_GUIDE*.md
+*_REFERENCE*.md
+*_STEPS*.md
+*_COMPLETE*.md
+
+# =========================
+# Docs folders (ignore fully)
+# =========================
+docs/
+reports/
+architecture/
+guides/
+
+# =========================
+# Visual / Diagrams
+# =========================
+VISUAL_*.md
+
+# =========================
+# Personal / One-time notes
+# =========================
+PERSONAL_*.md
+START_HERE*.md
+QUICK_START*.md
+README_SETUP.md
+SETUP_*.md
+EXACT_LOCATIONS_API_KEYS.md
+# Local-only validation / status files
+Financial_Agent_AI/PROJECT_STATUS.py
+Financial_Agent_AI/WORKFLOW_VALIDATION.py
+Financial_Agent_AI/PROJECT_VERIFICATION.py
+
+Financial_Agent_AI/main.py
+
+Agentic_AI/
+Annual_report/
+Multi-Agent-Deep-RAG/

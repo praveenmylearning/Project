@@ -1,0 +1,268 @@
+# Financial_Agent_AI: Unified Configuration Profile
+# This file defines execution strategies, module settings, and tool configurations
+# Works together with .env (API keys) and environment.py (centralized config)
+
+project:
+  name: "Financial Agent AI"
+  version: "1.0"
+  date: "2026-01-16"
+  description: "Agentic financial analysis system with RAG and professional valuation"
+
+# ==================== LLM Configuration ====================
+
+llm:
+  # Primary text generation model
+  # Defaults loaded from environment.py based on LLM_PROVIDER env var
+  # Options: gemini, gpt-4-turbo, mistral, llama2
+  text_generation: gemini  # Can be overridden by LLM_PROVIDER env var
+  
+  # Embedding model for semantic search and RAG
+  # Options: nomic-embed-text, google-embedding
+  embedding: nomic-embed-text
+  
+  # Generation configuration for different tasks
+  generation_config:
+    # Financial analysis: conservative (lower creativity)
+    financial_analysis: 
+      temperature: 0.3
+      max_tokens: 2048
+    
+    # Decision making: balanced
+    planning: 
+      temperature: 0.5
+      max_tokens: 1500
+    
+    # Reasoning: higher for complex analysis
+    reasoning: 
+      temperature: 0.7
+      max_tokens: 3000
+
+# ==================== Strategy Configuration ====================
+
+strategy:
+  # Execution strategy: agentic, retrieval, or hybrid
+  # Default: hybrid (uses both LLM reasoning and document search)
+  mode: "hybrid"
+  
+  # Planning configuration
+  planning:
+    type: "graph-native"        # graph-native or sequential
+    max_depth: 3                # Maximum reasoning depth
+    max_steps: 10               # Maximum steps per query
+    
+  # Exploration configuration
+  exploration:
+    type: "exploratory"         # conservative or exploratory
+    fallback_enabled: true      # Enable fallback strategies on failure
+    max_retries: 3              # Maximum retries (from config.max_retries)
+    tool_failure_switching: true # Switch tools on failure
+
+  # Memory configuration
+  memory:
+    session_memory: true        # Track session state
+    conversation_history: true  # Store conversation history
+    plan_memory: true           # Adapt plans based on memory
+
+# ==================== Tool Configuration ====================
+
+tools:
+  # Financial analysis tools
+  finance:
+    enabled: true
+    tools:
+      - calculate_dcf                # Discounted Cash Flow
+      - calculate_wacc               # Weighted Average Cost of Capital
+      - calculate_capm               # Capital Asset Pricing Model
+      - calculate_two_stage_growth   # Two-stage growth model
+      - calculate_relative_valuation # Multiples-based analysis
+      - calculate_sensitivity_analysis # Assumption impact
+      - calculate_financial_ratios   # ROE, ROA, Leverage
+      - extract_financial_metrics    # Extract from documents
+  
+  # MCP Servers
+  mcp_servers:
+    - id: financial_tools
+      script: tools/finance_tools.py
+      description: "Professional financial analysis and valuation tools"
+      enabled: true
+      
+    - id: document_tools
+      script: tools/document_tools.py
+      description: "Document processing and extraction"
+      enabled: true
+      
+    - id: rag_tools
+      script: retrieval/rag_pipeline.py
+      description: "Retrieval-Augmented Generation tools"
+      enabled: true
+
+# ==================== Module Configuration ====================
+
+modules:
+  perception:
+    # Phase 1: Query understanding and intent extraction
+    prompt_path: "prompts/perception_prompt.txt"
+    enabled: true
+    timeout_seconds: 15        # From config.max_tool_timeout
+    retries: 2
+    use_sandbox: true
+    
+  decision:
+    # Phase 2: Graph-based planning
+    prompt_path: "prompts/decision_prompt.txt"
+    enabled: true
+    timeout_seconds: 20
+    retries: 3
+    use_sandbox: true
+    tool_failure_tracking: true
+    
+  retrieval:
+    # Phase 3: Document search and retrieval
+    prompt_path: "prompts/retrieval_prompt.txt"
+    enabled: true
+    timeout_seconds: 30
+    retries: 2
+    use_sandbox: false        # RAG doesn't need sandbox
+    method: "hybrid"          # dense, sparse, hybrid, or rerank
+    max_documents: 10         # Max documents to retrieve
+    similarity_threshold: 0.7 # Min similarity score
+    
+  execution:
+    # Phase 4: Tool execution
+    enabled: true
+    timeout_seconds: 60       # Tools may take longer (from config.max_tool_timeout)
+    retries: 3                # From config.max_retries
+    use_sandbox: true         # Run tools in sandbox (from config.sandbox_enabled)
+    sandbox_type: "restricted"  # restricted, moderate, or permissive
+    max_functions: 20         # Max functions per execution
+    
+  summarization:
+    # Phase 5: Output synthesis
+    prompt_path: "prompts/summarizer_prompt.txt"
+    enabled: true
+    timeout_seconds: 15
+    retries: 2
+    use_sandbox: false
+    format: "markdown"        # Output format
+    include_citations: true   # Include source citations
+
+# ==================== Data Configuration ====================
+
+data:
+  # Annual reports
+  annual_reports:
+    enabled: true
+    path: "data/annual_reports"        # From config.annual_reports_dir
+    formats: ["pdf", "txt", "md"]
+    max_file_size_mb: 50
+    
+  # SEC filings
+  sec_filings:
+    enabled: true
+    url: "https://www.sec.gov"
+    types: ["10-k", "10-q", "8-k"]
+    cache_enabled: true
+    cache_ttl_days: 30
+    
+  # Market data
+  market_data:
+    enabled: true
+    source: "yahoo_finance"
+    cache_enabled: true
+    cache_ttl_minutes: 60
+    
+  # Vector database
+  vector_store:
+    enabled: true
+    type: "qdrant"
+    url: "http://localhost:6333"       # From config.qdrant_url
+    collection: "financial_documents"  # From config.qdrant_collection
+    embedding_model: "nomic-embed-text"
+    chunk_size: 500
+    chunk_overlap: 50
+
+# ==================== Logging Configuration ====================
+
+logging:
+  level: "INFO"               # DEBUG, INFO, WARNING, ERROR (from config.log_level)
+  format: "json"              # json or plain text
+  enable_file_logging: true   # From config.enable_logging
+  log_directory: "logs"       # From config.logs_dir
+  max_file_size_mb: 10
+  backup_count: 5
+
+# ==================== Execution Settings ====================
+
+execution:
+  # Sandbox execution settings (from config)
+  sandbox_enabled: true       # From config.sandbox_enabled
+  sandbox_type: "restricted"  # restricted or permissive
+  
+  # Timeouts (all from config)
+  tool_timeout_seconds: 30    # From config.max_tool_timeout
+  retrieval_timeout_seconds: 30
+  generation_timeout_seconds: 60
+  
+  # Retries (from config)
+  max_retries: 3              # From config.max_retries
+  retry_backoff_factor: 2     # Exponential backoff
+  
+  # Rate limiting
+  rate_limit_enabled: true
+  rate_limit_per_minute: 60
+  
+  # Caching
+  cache_enabled: true
+  cache_ttl_seconds: 3600
+
+# ==================== API Configuration ====================
+
+api:
+  # All API keys come from .env file via environment.py
+  # This section just documents which APIs are configured
+  
+  llm:
+    provider: "google"        # From config.llm_provider
+    google:
+      enabled: true
+      model: "gemini-2.0-flash"  # From config.google_model
+      # api_key: from .env -> config.google_api_key
+    
+    openai:
+      enabled: true
+      model: "gpt-4-turbo"       # From config.openai_model
+      # api_key: from .env -> config.openai_api_key
+    
+    ollama:
+      enabled: true
+      url: "http://localhost:11434"  # From config.ollama_url
+      model: "mistral"               # From config.ollama_model
+  
+  vector_db:
+    qdrant:
+      url: "http://localhost:6333"   # From config.qdrant_url
+      collection: "financial_documents"  # From config.qdrant_collection
+      # api_key: from .env -> config.qdrant_api_key (optional)
+  
+  langsmith:
+    enabled: false
+    # api_key: from .env
+
+# ==================== Feature Flags ====================
+
+features:
+  # MCP Servers (from config)
+  mcp_finance_enabled: true     # From config.mcp_finance_enabled
+  mcp_web_enabled: true         # From config.mcp_web_enabled
+  mcp_document_enabled: true    # From config.mcp_document_enabled
+  
+  # Advanced features
+  memory_adaptation: true       # Adapt based on conversation history
+  tool_failure_switching: true  # Switch tools on failure
+  hybrid_search: true           # Use both dense + sparse search
+  reranking: true               # Rerank search results
+  
+  # Debug features
+  debug_mode: false             # From config.debug_mode
+  verbose_logging: false        # From config.verbose
+  trace_execution: false        # Detailed execution trace

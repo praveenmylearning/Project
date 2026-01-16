@@ -1,0 +1,113 @@
+# MCP Server Configuration for Financial_Agent_AI
+# Defines available tools and their endpoints
+
+mcp_servers:
+  # Financial tools - DCF, P/E, Cash Flow Analysis
+  - name: "financial_tools"
+    type: "stdio"
+    command: "python"
+    args:
+      - "tools/finance_tools.py"
+    description: "Financial valuation and analysis tools"
+    tools:
+      - calculate_dcf                  # Discounted Cash Flow valuation
+      - calculate_wacc                 # Weighted Average Cost of Capital
+      - calculate_capm                 # Capital Asset Pricing Model
+      - calculate_two_stage_growth     # Two-stage growth model
+      - calculate_relative_valuation   # Multiples-based analysis
+      - calculate_sensitivity_analysis # Assumption impact testing
+      - calculate_financial_ratios     # ROE, ROA, Leverage ratios
+      - extract_financial_metrics      # Extract from documents
+    enabled: true
+
+  # Web scraping / information retrieval
+  - name: "web_tools"
+    type: "stdio"
+    command: "python"
+    description: "Web and information retrieval"
+    tools:
+      - search_financial_news
+      - get_stock_data
+      - retrieve_company_info
+    enabled: true
+
+  # Document processing
+  - name: "document_tools"
+    type: "stdio"
+    command: "python"
+    description: "Document processing and extraction"
+    tools:
+      - extract_pdf_text
+      - extract_tables
+      - extract_images
+      - chunk_documents
+    enabled: true
+
+  # RAG / Retrieval tools
+  - name: "rag_tools"
+    type: "stdio"
+    command: "python"
+    description: "Retrieval-Augmented Generation tools"
+    tools:
+      - hybrid_search
+      - semantic_search
+      - filter_documents
+      - rerank_results
+    enabled: true
+
+# Configuration options
+settings:
+  timeout: 30  # seconds
+  max_retries: 3
+  enable_logging: true
+  log_level: "INFO"
+  cache_results: true
+  sandbox_enabled: true  # Run tools in sandboxed environment
+  
+# Component-specific settings
+components:
+  perception:
+    timeout: 15
+    retries: 2
+    use_sandbox: true
+    
+  decision:
+    timeout: 20
+    retries: 3
+    use_sandbox: true
+    
+  retrieval:
+    timeout: 30
+    retries: 2
+    use_sandbox: false  # RAG doesn't need sandbox
+    
+  execution:
+    timeout: 60  # Tools may take longer
+    retries: 3
+    use_sandbox: true
+    
+  summarization:
+    timeout: 15
+    retries: 2
+    use_sandbox: false
+
+# Data source configuration
+data_sources:
+  annual_reports:
+    enabled: true
+    path: "data/annual_reports"
+    formats: ["pdf", "txt", "md"]
+    
+  sec_filings:
+    enabled: true
+    url: "https://www.sec.gov"
+    types: ["10-k", "10-q", "8-k"]
+    
+  market_data:
+    enabled: true
+    source: "yahoo_finance"
+    
+  vector_store:
+    enabled: true
+    type: "qdrant"
+    collection: "financial_documents"
