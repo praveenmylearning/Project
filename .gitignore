@@ -1,31 +1,6 @@
 .venv/
 # Documentation and Guides (exclude all .md files in root EXCEPT README)
-*SETUP*.md
-*GUIDE*.md
-*START*.md
-*CHECKLIST*.md
-*STEPS*.md
-00_START_HERE_FIRST.md
-ALL_DONE.md
-CLEANUP*.md
-COMPLETION_SUMMARY.md
-CONFIG_REFERENCE.md
-DOCS_INDEX.md
-DOCUMENTATION_INDEX.md
-EXACT_LOCATIONS*.md
-FINAL_SUMMARY*.md
-IMPLEMENTATION_STATUS.md
-NEW_DOCUMENTATION.md
-PERSONAL_SETUP*.md
-PROJECT_SUMMARY.md
-PROJECT_STATUS.py
-PROJECT_VERIFICATION.py
-QUICK_START.md
-SYSTEM_ARCHITECTURE.md
-TESTING_GUIDE.md
-VISUAL*.md
-VISUAL*.py
-WORKFLOW_VALIDATION.py
+
 
 # Documentation folders
 docs/
@@ -119,10 +94,7 @@ __pycache__/
 # =========================
 # Docs folders (ignore fully)
 # =========================
-docs/
-reports/
-architecture/
-guides/
+
 
 # =========================
 # Visual / Diagrams
@@ -132,9 +104,7 @@ VISUAL_*.md
 # =========================
 # Personal / One-time notes
 # =========================
-PERSONAL_*.md
-START_HERE*.md
-QUICK_START*.md
+
 README_SETUP.md
 SETUP_*.md
 EXACT_LOCATIONS_API_KEYS.md
