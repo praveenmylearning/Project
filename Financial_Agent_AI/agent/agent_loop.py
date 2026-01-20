@@ -1,7 +1,8 @@
 """
-Agent Loop - Complete 5-Phase Orchestration Engine
+Agent Loop - 5-Phase Orchestration Engine for Single-Agent System
 Implements: Perception → Decision → Retrieval → Execution → Summarization
 
+Coordinates a single planning agent through sequential phases of analysis.
 Uses centralized configuration from config/environment.py
 """
 
@@ -36,7 +37,7 @@ class AgentLoop:
     """
     Core orchestration engine for financial analysis
     
-    Implements complete 5-phase agentic reasoning pipeline:
+    Single-agent 5-phase agentic reasoning pipeline:
     1. Perception: Analyze query intent and decide execution strategy
     2. Decision: Build execution graph and plan next actions
     3. Retrieval: Fetch relevant documents if needed
